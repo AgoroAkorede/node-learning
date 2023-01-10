@@ -1,21 +1,20 @@
-const express =require('express');
+const path = require("path");
+
+const express = require("express");
 
 const router = express.Router();
+const products = [];
 
+// /admin/add-product => GET
 router.get("/add-product", (req, res, next) => {
-    console.log("In anoda middleware!");
-    res.send(
-      "<form action='/admin/product' method='POST'><input type='text' name='title'><button type='submit'>Send</button></form>"
-    );
-    next();
-  });
-  
-  router.post("/product", (req, res, next) => {
-    const body =req.body
-    console.log(body);
-    res.redirect('/')
-  });
-  
-  
+  res.sendFile(path.join(__dirname, "../", "views", "add-product.html"));
+});
 
-module.exports = router
+// /admin/add-product => POST
+router.post("/add-product", (req, res, next) => {
+products.push({title: req.body.title})
+  res.redirect("/");
+});
+
+exports.routes=router;
+exports.products =products;

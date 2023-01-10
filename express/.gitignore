@@ -1,1 +1,3 @@
 node_modules
+.vscode
+express/node_modules
