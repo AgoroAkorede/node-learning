@@ -5,7 +5,9 @@ let _db;
 
 const mongoConnect = (callback) => {
   MongoClient.connect(
-    "mongodb+srv://KOREDE:*9$3ztAWUG8SQaf@cluster0.gpoozsa.mongodb.net/?retryWrites=true&w=majority"
+    "mongodb+srv://KOREDE:" +
+      encodeURIComponent("*9$3ztAWUG8SQaf") +
+      "@cluster0.gpoozsa.mongodb.net/"
   )
     .then((client) => {
       console.log("connected!!");
