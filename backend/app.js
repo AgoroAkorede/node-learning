@@ -24,7 +24,8 @@ app.use((req, res, next) => {
 app.use("/feed", feedRoutes);
 app.use("/auth", authRoutes);
 
-app.use((error, req, res, next) => {a
+app.use((error, req, res, next) => {
+  a;
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
@@ -37,6 +38,10 @@ mongoose
     "mongodb+srv://KOREDE:*9$3ztAWUG8SQaf@cluster0.gpoozsa.mongodb.net/messages"
   )
   .then((result) => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    const io = require("socket.io").init(server);
+    is.on("connection", (socket) => {
+      console.log("Client connected");
+    });
   })
   .catch((err) => console.log(err));
