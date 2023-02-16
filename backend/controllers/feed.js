@@ -1,5 +1,6 @@
-const { validationResult } = require("express-validator");
+const { validationResult } = require("express-validator/check");
 const Post = require("../modals/post");
+const User = require("../modals/user");
 
 exports.getPosts = (req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -42,22 +43,29 @@ exports.createPost = (req, res, next) => {
     _id: new Date().toISOString(),
     title: title,
     content: content,
-    creator: { name: "Korede" },
+    imageUrl: imageUrl,
+    creator: req.userId,
   });
   post
     .save()
     .then((result) => {
-      console.log(result);
+      User.findById(req.userId);
+    })
+    .then((user) => {
+      creator = user;
+      user.posts.push(post);
+    })
+    .then((result) => {
       res.status(201).json({
         message: "Post created successfully!",
-        post: {
-          _id: new Date().toISOString(),
-          creator: { name: "Korede" },
-        },
+        post: post,
+        creator: { _id: creator._id, name: creator.name },
       });
     })
     .catch((err) => {
-      console.log(err);
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
     });
   res.status(201).json({
     message: "Post created successfully!",
